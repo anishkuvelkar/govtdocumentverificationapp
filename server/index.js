@@ -9,32 +9,39 @@ mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('Database connected'))
   .catch((err) => console.log('Database not connected', err));
 
-// CORS configuration
-const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'https://govtdocumentverificationapp-1p1zir3xu-anishkuvelkars-projects.vercel.app',    // without slash
-    'https://govtdocumentverificationapp-1p1zir3xu-anishkuvelkars-projects.vercel.app/'   // with slash
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Added OPTIONS
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Accept-Language', 'Accept-Encoding'], // Added more headers
-  optionsSuccessStatus: 200 // Added this
-};
-
-// IMPORTANT: Handle preflight requests FIRST - ADD THIS BEFORE CORS
+// Manual CORS handling - REPLACE your entire CORS section with this:
 app.use((req, res, next) => {
-  if (req.method === 'OPTIONS') {
-    console.log('=== PREFLIGHT REQUEST ===');
-    console.log('Origin:', req.get('origin'));
-    console.log('URL:', req.url);
-    console.log('Headers:', req.headers);
-    console.log('========================');
+  const origin = req.headers.origin;
+  console.log('=== CORS HANDLER ===');
+  console.log('Method:', req.method);
+  console.log('Origin:', origin);
+  console.log('URL:', req.url);
+  
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'https://govtdocumentverificationapp-1p1zir3xu-anishkuvelkars-projects.vercel.app'
+  ];
+  
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization,Accept,Accept-Language,Accept-Encoding');
   }
+  
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    console.log('Handling preflight request');
+    res.status(200).end();
+    return;
+  }
+  
+  console.log('===================');
   next();
 });
 
-app.use(cors(corsOptions));
+// Remove the old cors() middleware - we're handling it manually now
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
@@ -44,7 +51,6 @@ app.use((req, res, next) => {
   console.log('Method:', req.method);
   console.log('URL:', req.url);
   console.log('Origin:', req.get('origin'));
-  console.log('Headers:', req.headers);
   console.log('===================');
   next();
 });
@@ -52,9 +58,8 @@ app.use((req, res, next) => {
 // Routes
 app.get('/debug-cors', (req, res) => {
   res.json({
-    corsOrigins: corsOptions.origin,
-    timestamp: new Date().toISOString(),
-    message: 'CORS debug info'
+    message: 'Manual CORS enabled',
+    timestamp: new Date().toISOString()
   });
 });
 
