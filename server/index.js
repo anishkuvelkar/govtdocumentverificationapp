@@ -27,6 +27,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 // Routes
+app.get('/debug-cors', (req, res) => {
+  res.json({
+    corsOrigins: corsOptions.origin,
+    timestamp: new Date().toISOString(),
+    message: 'CORS debug info'
+  });
+});
 app.use('/', require('./routes/authRoutes'));
 
 const port = process.env.PORT || 8000;
