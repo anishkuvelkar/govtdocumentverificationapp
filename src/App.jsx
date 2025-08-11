@@ -10,7 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Admintwo from './pages/Admintwo';   
-import Adminone from './pages/adminone';
+import Adminone from './pages/Aadminone';
 import People from './pages/People';
 
 axios.defaults.baseURL = 'https://govtdocumentverificationapp.onrender.com';
