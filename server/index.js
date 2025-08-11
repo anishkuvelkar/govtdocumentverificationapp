@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const app = express();
 const cookieParser = require('cookie-parser');
 
-
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('Database connected'))
   .catch((err) => console.log('Database not connected', err));
@@ -18,9 +17,22 @@ const corsOptions = {
     'https://govtdocumentverificationapp-1p1zir3xu-anishkuvelkars-projects.vercel.app/'   // with slash
   ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Added OPTIONS
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Accept-Language', 'Accept-Encoding'], // Added more headers
+  optionsSuccessStatus: 200 // Added this
 };
+
+// IMPORTANT: Handle preflight requests FIRST - ADD THIS BEFORE CORS
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    console.log('=== PREFLIGHT REQUEST ===');
+    console.log('Origin:', req.get('origin'));
+    console.log('URL:', req.url);
+    console.log('Headers:', req.headers);
+    console.log('========================');
+  }
+  next();
+});
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -36,6 +48,7 @@ app.use((req, res, next) => {
   console.log('===================');
   next();
 });
+
 // Routes
 app.get('/debug-cors', (req, res) => {
   res.json({
@@ -44,6 +57,7 @@ app.get('/debug-cors', (req, res) => {
     message: 'CORS debug info'
   });
 });
+
 app.use('/', require('./routes/authRoutes'));
 
 const port = process.env.PORT || 8000;
