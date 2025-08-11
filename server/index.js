@@ -26,6 +26,16 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
+
+app.use((req, res, next) => {
+  console.log('=== REQUEST DEBUG ===');
+  console.log('Method:', req.method);
+  console.log('URL:', req.url);
+  console.log('Origin:', req.get('origin'));
+  console.log('Headers:', req.headers);
+  console.log('===================');
+  next();
+});
 // Routes
 app.get('/debug-cors', (req, res) => {
   res.json({
