@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGO_URL)
 
 // CORS configuration
 const corsOptions = {
-  origin: 'http://localhost:5173', // your frontend URL
+  origin: 'https://govtdocumentverificationapp-1p1zir3xu-anishkuvelkars-projects.vercel.app/', // your frontend URL
   credentials: true,               // allow cookies and credentials
 };
 
