@@ -23,7 +23,7 @@ export default function Signup() {
   }
 
   try {
-    const response = await axios.post('http://localhost:8000/register', {
+    const response = await axios.post('https://govtdocumentverificationapp.onrender.com/register', {
       name: fullName,
       email,
       password,

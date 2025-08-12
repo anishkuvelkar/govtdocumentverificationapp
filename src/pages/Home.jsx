@@ -26,7 +26,7 @@ export default function Home() {
 
     try {
       const res = await axios.post(
-        'http://localhost:8000/login',
+        'https://govtdocumentverificationapp.onrender.com/login',
         { email: email.trim(), password },
         { withCredentials: true }
       );
