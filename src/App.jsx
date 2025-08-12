@@ -13,7 +13,7 @@ import Admintwo from './pages/Admintwo';
 import Adminone from './pages/Aadminone';
 import People from './pages/People';
 
-axios.defaults.baseURL = 'https://govtdocumentverificationapp.onrender.com';
+axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 
 function App() {

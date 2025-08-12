@@ -20,7 +20,7 @@ export default function PeoplePage() {
   const fetchRequests = async () => {
     setLoadingRequests(true);
     try {
-      const res = await axios.get("https://govtdocumentverificationapp.onrender.com/my-requests", {
+      const res = await axios.get("http://localhost:8000/my-requests", {
         withCredentials: true,
       });
       setRequests(res.data);
@@ -50,7 +50,7 @@ export default function PeoplePage() {
     formData.append("file", document);
 
     try {
-      const response = await axios.post("https://govtdocumentverificationapp.onrender.com/upload", formData, {
+      const response = await axios.post("http://localhost:8000/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
@@ -58,7 +58,7 @@ export default function PeoplePage() {
       const fileUrl = response.data.fileUrl;
 
       await axios.post(
-        "https://govtdocumentverificationapp.onrender.com/submit-request",
+        "http://localhost:8000/submit-request",
         { documentUrl: fileUrl, comment },
         { withCredentials: true }
       );

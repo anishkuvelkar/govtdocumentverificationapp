@@ -16,7 +16,7 @@ export default function Adminone() {
   const fetchRequests = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://govtdocumentverificationapp.onrender.com/admin1/requests", {
+      const res = await fetch("http://localhost:8000/admin1/requests", {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Failed to fetch");
@@ -31,7 +31,7 @@ export default function Adminone() {
   const handleApprove = async (id) => {
     setActionLoading((prev) => ({ ...prev, [id]: true }));
     try {
-      await fetch(`https://govtdocumentverificationapp.onrender.com/admin1/request/${id}/approve`, {
+      await fetch(`http://localhost:8000/admin1/request/${id}/approve`, {
         method: "POST",
         credentials: "include",
       });
@@ -49,7 +49,7 @@ export default function Adminone() {
     }
     setActionLoading((prev) => ({ ...prev, [id]: true }));
     try {
-      await fetch(`https://govtdocumentverificationapp.onrender.com/admin1/request/${id}/reject`, {
+      await fetch(`http://localhost:8000/admin1/request/${id}/reject`, {
         method: "POST",
         credentials: "include",
         headers: {
